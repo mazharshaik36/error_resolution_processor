@@ -29,12 +29,12 @@ class ErrorRepository {
     );
   }
 
-  async incrementRetry(id) {
+  async incrementRetry(id, emailSent = false, emailSentAt = null) {
     await this.client.query(
       `UPDATE api_error_resolution_queue
-       SET retry_count = retry_count + 1
+       SET retry_count = retry_count + 1, email_sent = $2, email_sent_at = $3
        WHERE id = $1`,
-      [id]
+      [id, emailSent, emailSentAt]
     );
   }
 }
